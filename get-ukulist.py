@@ -5,6 +5,8 @@
 import urllib2 
 import re
 import os
+import shutil
+import stat
 import sys
 import tempfile
 import time
@@ -67,7 +69,11 @@ server_fs.close()
 ipset_conf_fs.close()
 ipset_sh_fs.close()
 
-os.rename(server_file, sys.argv[1])
-os.rename(ipset_conf_file, sys.argv[2])
-os.rename(ipset_sh_file, sys.argv[3])
+os.chmod(server_file,stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH)
+os.chmod(ipset_conf_file,stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH)
+os.chmod(ipset_sh_file,stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH)
+
+shutil.move(server_file, sys.argv[1])
+shutil.move(ipset_conf_file, sys.argv[2])
+shutil.move(ipset_sh_file, sys.argv[3])
 

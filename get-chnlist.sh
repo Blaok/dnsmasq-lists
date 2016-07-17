@@ -16,5 +16,6 @@ TMP_IPSET_CONF=$(mktemp)
 echo "# updated on $(date +"%Y-%m-%d %H:%M:%S %Z")"> ${TMP_SERVER_CONF}
 curl -s ${URL} |grep -v '^#'|sed -e "s/114.114.114.114/${DNS}#${PORT}/" >> ${TMP_SERVER_CONF}
 sed ${TMP_SERVER_CONF} -e "s/server/ipset/" -e "s/${DNS}#${PORT}/${IPSET}/" >> ${TMP_IPSET_CONF}
+chmod 664 ${TMP_SERVER_CONF} ${TMP_IPSET_CONF}
 mv -f ${TMP_SERVER_CONF} ${SERVER_CONF}
 mv -f ${TMP_IPSET_CONF} ${IPSET_CONF}
