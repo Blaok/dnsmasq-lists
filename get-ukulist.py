@@ -1,8 +1,8 @@
-#!/usr/bin/env python  
+#!/usr/bin/env python
 #coding=utf-8
 # requires tld
- 
-import urllib2 
+
+import urllib2
 import re
 import os
 import shutil
@@ -11,7 +11,7 @@ import sys
 import tempfile
 import time
 import tld
- 
+
 mydnsip = '114.114.114.114'
 mydnsport = '53'
 myipset = 'uku'
@@ -30,21 +30,24 @@ ipset_sh_fs = open(ipset_sh_file, 'w')
 
 baseurl = 'https://raw.githubusercontent.com/Unblocker/Unblock-Youku/master/shared/urls.js'
 comment_pattern = '^\s*\/\/.*$'
-valid_pattern = '\s*["\']https?://[\w\.]*/'
-domain_pattern = '([\w\-\_]+\.[\w\.\-\_]+)[\/\*]*' 
+valid_pattern = '\s*["\']https?://[\*\-\w\.]*/'
+domain_pattern = '([\w\-\_]+\.[\w\.\-\_]+)[\/\*]*'
 ip_pattern = '(?:[0-9]{1,3}\.){3}[0-9]{1,3}'
- 
+
 info_str = '# updated on ' + time.strftime("%Y-%m-%d %H:%M:%S %Z", time.localtime()) + '\n'
 server_fs.write(info_str)
 ipset_conf_fs.write(info_str)
 ipset_sh_fs.write(info_str)
- 
+
 content = urllib2.urlopen(baseurl, timeout=15).read()
 
 # remember all blocked domains, in case of duplicate records
 domainlist = []
 
-for line in content.splitlines():    
+for line in content.splitlines():
+    comment_found = re.findall(comment_pattern, line)
+    if comment_found:
+        continue
     domain_found = re.findall(valid_pattern, line)
     if domain_found:
         ip_found = re.findall(ip_pattern, domain_found[0])
