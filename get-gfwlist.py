@@ -1,6 +1,5 @@
 #!/usr/bin/env python  
 #coding=utf-8
-# requires tld
  
 import urllib2 
 import re
@@ -10,7 +9,6 @@ import stat
 import sys
 import tempfile
 import time
-import tld
  
 mydnsip = '8.8.8.8'
 mydnsport = '53'
@@ -54,7 +52,7 @@ for line in content.splitlines():
             if re.findall(ip_pattern, domain_found[0]):
                 domain = domain_found[0]
             else:
-                domain = tld.get_tld('http://'+domain_found[0],fail_silently=True)
+                domain = domain_found[0]
                 if domain:
                     if domain[-3:] == ".tw":
                         domain = '.'.join(domain.split('.')[-2:])
