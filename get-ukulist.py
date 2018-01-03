@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 #coding=utf-8
 # requires tld
 
-import urllib2
-import re
+from urllib.request import urlopen
 import os
+import re
 import shutil
 import stat
 import sys
@@ -39,12 +39,13 @@ server_fs.write(info_str)
 ipset_conf_fs.write(info_str)
 ipset_sh_fs.write(info_str)
 
-content = urllib2.urlopen(baseurl, timeout=15).read()
+content = urlopen(baseurl, timeout=15).read()
 
 # remember all blocked domains, in case of duplicate records
 domainlist = []
 
 for line in content.splitlines():
+    line = line.decode('utf-8')
     comment_found = re.findall(comment_pattern, line)
     if comment_found:
         continue

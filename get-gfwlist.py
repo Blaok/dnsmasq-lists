@@ -1,9 +1,10 @@
-#!/usr/bin/env python  
+#!/usr/bin/python3
 #coding=utf-8
  
-import urllib2 
-import re
+from urllib.request import urlopen
+import base64
 import os
+import re
 import shutil
 import stat
 import sys
@@ -38,12 +39,14 @@ server_fs.write(info_str)
 ipset_conf_fs.write(info_str)
 ipset_sh_fs.write(info_str)
  
-content = urllib2.urlopen(baseurl, timeout=15).read().decode('base64')
+content = urlopen(baseurl, timeout=15).read()
+content = base64.b64decode(content)
 
 # remember all blocked domains, in case of duplicate records
 domainlist = []
 
-for line in content.splitlines():    
+for line in content.splitlines():
+    line = line.decode('utf-8')
     if re.findall(comment_pattern, line):
         continue
     else:
